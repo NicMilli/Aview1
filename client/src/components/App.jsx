@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Translator from './Translator';
 import NavBar from './NavBar';
 import axios from 'axios';
+import '../index.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 export default function App() {
     const [preference, setPreference] = useState(false);
@@ -27,11 +30,19 @@ export default function App() {
                 setSelectedLanguage={setSelectedLanguage}
             />
             {preference
-                ? <Translator preference={preference}/>
+                ? <Translator preference={preference} selectedLanguage={selectedLanguage}/>
                 : <>
-                    <p>Hello, are you a cat or dog person?</p>
-                    <button onClick={() => { setPreference('cat'); } }>Cat</button>
-                    <button onClick={() => { setPreference('dog'); } }>Dog</button>
+                    <p className='gradient-text gradient-2'>Hello, are you a cat or dog person?</p>
+                    <div>
+                        <button className='gradient-btn' onClick={() => { setPreference('cat'); } }>
+                            <FontAwesomeIcon icon={icon({name: 'cat', size: 'lg'})} color='#000017' size='2xl' />
+                        </button>
+                        
+                        <button className='gradient-btn' onClick={() => { setPreference('dog'); } }>
+                            <FontAwesomeIcon icon={icon({name: 'dog',})} color='#000017' size='2xl' />
+                        </button>
+                    </div>
+                    
                 </>
             }
         </div>

@@ -38,7 +38,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        ADVICE_API: JSON.stringify(process.env.ADVICE_API),
+        CAT_API: JSON.stringify(process.env.CAT_API),
+        DOG_API: JSON.stringify(process.env.DOG_API),
         TRANSLATION_API: JSON.stringify(process.env.TRANSLATION_API),
       },
     }),

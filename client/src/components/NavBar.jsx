@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 
 const NavBar = ({ languages, selectedLanguage, setSelectedLanguage }) => {
+    console.log('HERE====', selectedLanguage)
+    const handleChange = (e) => {
+        setSelectedLanguage(languages[e.target.value])
+    }
 
     return (
         <div>
-            <label>
+            <label className='gradient-text gradient-2'>
                 Select a language: 
-                <select value={selectedLanguage} onChange={e => setSelectedLanguage(e.target.value)}>
-                    {languages.map((lang) => (
-                        <option value={lang} key={lang.code}>{lang.name}</option>
+                <select onChange={handleChange}>
+                    {languages.map((lang, index) => (
+                        <option value={index} key={lang.code}>{lang.name}</option>
                     ))}
                 </select>
             </label>
