@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: path.join(__dirname, '../client/dist/')});
+    res.send('DEPLOYED...')
+    //res.sendFile('index.html', {root: path.join(__dirname, '../client/dist/')});
 })
 
 const PORT = process.env.PORT || 3000;
