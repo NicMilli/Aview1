@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
+import TextCard from './TextCard';
+import Button from './Button';
 
-const Translator = ({ preference, selectedLanguage }) => {
-    const [resource, setResource] = useState('');
+const Translator = ({ preference, selectedLanguage, translate }) => {
+    const [resource, setResource] = useState('loading...');
     const [translatedResource, setTranslatedResource] = useState('');
 
     useEffect(() => {
         fetchResource();
-    }, [])
+    }, [preference])
 
     useEffect(() => {
         setTranslatedResource(() => 'Translating...')
@@ -27,27 +31,25 @@ const Translator = ({ preference, selectedLanguage }) => {
     }
 
     const translateResource = async () => {
-        if (resource.length > 0) {
-                const translation = {
-                q: resource,
-                source: "en",
-                target: selectedLanguage.code,
-            }
-
-            const res = await axios.post(`${process.env.TRANSLATION_API}/translate`, translation);
-            const newResource = await res.data.translatedText;
-            setTranslatedResource(newResource);
+        const translationObj = {
+            q: resource,
+            source: "en",
+            target: selectedLanguage.code,
         }
-        
+
+        const newResource = await translate(translationObj);
+        setTranslatedResource(newResource);
     }
 
     return (
-        <div>
-            <span className='gradient-text gradient-2'>{resource}</span>
-            <br/>
-            <button onClick={fetchResource}>Redo</button>
-            <br/>
-            <span className='gradient-text gradient-2'>{translatedResource}</span>
+        <div className='translator'>
+            <TextCard text={resource} title='English'/>
+            <div className='center'>
+                <Button handleClick={fetchResource}>
+                    <FontAwesomeIcon icon={icon({name: 'rotate-right',})} color='#000017' size='2xl' />
+                </Button>
+            </div>
+            <TextCard text={translatedResource} title={selectedLanguage.name}/>
         </div>
     );
 }

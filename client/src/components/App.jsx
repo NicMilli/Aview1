@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Translator from './Translator';
 import NavBar from './NavBar';
+import Buttons from './Buttons';
+import TextCard from './TextCard';
 import axios from 'axios';
 import '../index.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 export default function App() {
+    const englishGreeting = { text: 'This app provides facts about your pets that can be translated into 20 different languages! \n Are you a cat or dog person?', title: 'Welcome'};
     const [preference, setPreference] = useState(false);
     const [languages, setLanguages] = useState([{code: 'en', name: 'English'}]);
     const [selectedLanguage, setSelectedLanguage] = useState({code: 'en', name: 'English'});
+    const [greeting, setGreeting] = useState(englishGreeting);
 
     useEffect(() => {
         // Fetch possible languages
@@ -17,34 +19,49 @@ export default function App() {
     }, [])
 
     const getLanguages = async () => {
-        const res = await axios.get(`${process.env.TRANSLATION_API}/languages`);
-        const languageOptions = await res.data;
-        setLanguages(languageOptions);
+        try {
+            const res = await axios.get(`${process.env.TRANSLATION_API}/languages`);
+            const languageOptions = await res.data;
+            setLanguages(languageOptions);
+        } catch (err) {
+            setLanguages([{code: 'en', name: 'English'}])
+        }
+    }
+
+    const translate = async (translationObj) => {
+        try {
+            const res = await axios.post(`${process.env.TRANSLATION_API}/translate`, translationObj);
+            const newResource = await res.data.translatedText;
+            return newResource;
+        } catch (err) {
+            return 'Error fetching your fact'
+        }
+        
     }
 
     return (
         <div id="App">
             <NavBar
                 languages={languages}
-                selectedLanguage={selectedLanguage}
+                preference={preference}
                 setSelectedLanguage={setSelectedLanguage}
+                setPreference={setPreference}
             />
-            {preference
-                ? <Translator preference={preference} selectedLanguage={selectedLanguage}/>
-                : <>
-                    <p className='gradient-text gradient-2'>Hello, are you a cat or dog person?</p>
-                    <div>
-                        <button className='gradient-btn' onClick={() => { setPreference('cat'); } }>
-                            <FontAwesomeIcon icon={icon({name: 'cat', size: 'lg'})} color='#000017' size='2xl' />
-                        </button>
-                        
-                        <button className='gradient-btn' onClick={() => { setPreference('dog'); } }>
-                            <FontAwesomeIcon icon={icon({name: 'dog',})} color='#000017' size='2xl' />
-                        </button>
+            <div className='center'>
+                {preference.length > 0
+                    ? <Translator
+                        preference={preference}
+                        selectedLanguage={selectedLanguage}
+                        translate={translate}
+                    />
+                    : <div>
+                        <TextCard text={greeting.text} title={greeting.title} />
+                        <div className='center'>
+                            <Buttons iconSize='8x' setPreference={setPreference}/> 
+                        </div>
                     </div>
-                    
-                </>
-            }
+                }
+            </div>
         </div>
     );
 }

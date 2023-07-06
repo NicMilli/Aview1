@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
+import Buttons from './Buttons';
 
-const NavBar = ({ languages, selectedLanguage, setSelectedLanguage }) => {
-    console.log('HERE====', selectedLanguage)
+const NavBar = ({ languages, setSelectedLanguage, preference, setPreference }) => {
+
     const handleChange = (e) => {
         setSelectedLanguage(languages[e.target.value])
     }
 
     return (
-        <div>
-            <label className='gradient-text gradient-2'>
-                Select a language: 
-                <select onChange={handleChange}>
+        <div className='nav-bar'>
+            <label className='color-text'>
+                Language: &nbsp;
+                <select onChange={handleChange} className='color-select'>
                     {languages.map((lang, index) => (
-                        <option value={index} key={lang.code}>{lang.name}</option>
+                        <option className='color-option' value={index} key={lang.code}>{lang.name}</option>
                     ))}
                 </select>
             </label>
             
+            {preference.length > 0
+                ? <Buttons iconSize='lg' setPreference={setPreference}/>
+                : null
+            }
         </div>
     );
 }
