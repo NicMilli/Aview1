@@ -12,11 +12,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../../dist')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-})
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
