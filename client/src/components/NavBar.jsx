@@ -19,7 +19,11 @@ const NavBar = ({ languages, setSelectedLanguage, preference, setPreference }) =
             </label>
             
             {preference.length > 0
-                ? <Buttons iconSize='lg' setPreference={setPreference}/>
+                ? <Buttons
+                    iconSize='3x'
+                    setPreference={setPreference}
+                    preference={preference}
+                />
                 : null
             }
         </div>

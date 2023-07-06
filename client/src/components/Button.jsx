@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Button = ({ children, handleClick }) => {
+const Button = ({ children, handleClick, selected }) => {
 
     return (   
-        <button className='gradient-btn' onClick={handleClick}>
+        <button className={selected ? 'gradient-btn current-btn' : 'gradient-btn'} onClick={handleClick}>
             {children}
         </button>
     );

@@ -8,32 +8,39 @@ import '../index.css';
 
 export default function App() {
     const englishGreeting = { text: 'This app provides facts about your pets that can be translated into 20 different languages! \n Are you a cat or dog person?', title: 'Welcome'};
-    const [preference, setPreference] = useState(false);
-    const [languages, setLanguages] = useState([{code: 'en', name: 'English'}]);
+    const [preference, setPreference] = useState('');
+    const [languages, setLanguages] = useState([{code: 'en', name: 'English', targets: 'initial'}]);
     const [selectedLanguage, setSelectedLanguage] = useState({code: 'en', name: 'English'});
     const [greeting, setGreeting] = useState(englishGreeting);
 
     useEffect(() => {
-        // Fetch possible languages
+        // Fetch possible languages on initial load
         getLanguages();
     }, [])
 
     useEffect(() => {
-        if (selectedLanguage.code === 'en') {
+        // Change the greeting based on selected language
+        if (selectedLanguage.targets === 'initial') {
+            // Except on initial load
+            return;
+        }
+        else if (selectedLanguage.code === 'en') {
             setGreeting(englishGreeting);
         } else {
             translateGreeting(englishGreeting);
         }
     }, [selectedLanguage])
 
+    // helper function to run async translation in useeffect
     const translateGreeting = async (greeting) => {
-        const newText = await translate(greeting.text);
-        const newTitle = await translate(greeting.title);
+        // Wrap in Promise so that both requests can run in parallel for better performance
+        let [newText, newTitle] = await Promise.all([translate(greeting.text), translate(greeting.title)]);
         if (newTitle !== 'Error fetching your fact' && newText !== 'Error fetching your fact') {
             setGreeting({ text: newText, title: newTitle });
         }
     }
 
+    // helper function to fetch available languages asynchronously in useeffect
     const getLanguages = async () => {
         try {
             const res = await axios.get(`${process.env.TRANSLATION_API}/languages`);
@@ -44,6 +51,7 @@ export default function App() {
         }
     }
 
+    // helper function to translate resources
     const translate = async (resource) => {
         const translationObj = {
             q: resource,

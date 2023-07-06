@@ -9,17 +9,21 @@ const Translator = ({ preference, selectedLanguage, translate }) => {
     const [resource, setResource] = useState('loading...');
     const [translatedResource, setTranslatedResource] = useState('');
 
+    // Fetch a new resource when the preference (cat or dog) changes
     useEffect(() => {
-        fetchResource();
+        fetchResource(preference);
     }, [preference])
 
+    // Translate the current resource when a new resource is fetched
+    // or the target language is changed
     useEffect(() => {
         setTranslatedResource(() => 'Translating...')
-        translateResource();
+        translateResource(resource);
     }, [resource, selectedLanguage])
 
-    const fetchResource = async () => {
-        if (preference === 'cat') {
+    // Fetch the required resource
+    const fetchResource = async (target) => {
+        if (target === 'cat') {
             const res = await axios.get(process.env.CAT_API);
             const fact = await res.data.fact;
             setResource(fact);
@@ -30,8 +34,9 @@ const Translator = ({ preference, selectedLanguage, translate }) => {
         }
     }
 
-    const translateResource = async () => {
-        const newResource = await translate(resource);
+    // Translate the current fact
+    const translateResource = async (text) => {
+        const newResource = await translate(text);
         setTranslatedResource(newResource);
     }
 
