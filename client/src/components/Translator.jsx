@@ -31,13 +31,7 @@ const Translator = ({ preference, selectedLanguage, translate }) => {
     }
 
     const translateResource = async () => {
-        const translationObj = {
-            q: resource,
-            source: "en",
-            target: selectedLanguage.code,
-        }
-
-        const newResource = await translate(translationObj);
+        const newResource = await translate(resource);
         setTranslatedResource(newResource);
     }
 

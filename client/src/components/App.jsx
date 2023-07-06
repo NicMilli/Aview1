@@ -18,6 +18,22 @@ export default function App() {
         getLanguages();
     }, [])
 
+    useEffect(() => {
+        if (selectedLanguage.code === 'en') {
+            setGreeting(englishGreeting);
+        } else {
+            translateGreeting(englishGreeting);
+        }
+    }, [selectedLanguage])
+
+    const translateGreeting = async (greeting) => {
+        const newText = await translate(greeting.text);
+        const newTitle = await translate(greeting.title);
+        if (newTitle !== 'Error fetching your fact' && newText !== 'Error fetching your fact') {
+            setGreeting({ text: newText, title: newTitle });
+        }
+    }
+
     const getLanguages = async () => {
         try {
             const res = await axios.get(`${process.env.TRANSLATION_API}/languages`);
@@ -28,7 +44,12 @@ export default function App() {
         }
     }
 
-    const translate = async (translationObj) => {
+    const translate = async (resource) => {
+        const translationObj = {
+            q: resource,
+            source: "en",
+            target: selectedLanguage.code,
+        };
         try {
             const res = await axios.post(`${process.env.TRANSLATION_API}/translate`, translationObj);
             const newResource = await res.data.translatedText;
@@ -36,7 +57,6 @@ export default function App() {
         } catch (err) {
             return 'Error fetching your fact'
         }
-        
     }
 
     return (
