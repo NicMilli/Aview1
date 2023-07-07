@@ -11,6 +11,7 @@ function Translator({ preference, selectedLanguage, translate }) {
 
   // Fetch the required resource
   const fetchResource = async (target) => {
+    setResource(() => 'Loading...');
     if (target === 'cat') {
       const res = await axios.get(process.env.CAT_API);
       const fact = await res.data.fact;
