@@ -10,9 +10,9 @@ function Translator({ preference, selectedLanguage, translate }) {
   const [translatedResource, setTranslatedResource] = useState('');
 
   // Fetch the required resource
-  const fetchResource = async (target) => {
+  const fetchResource = async () => {
     setResource(() => 'Loading...');
-    if (target === 'cat') {
+    if (preference === 'cat') {
       const res = await axios.get(process.env.CAT_API);
       const fact = await res.data.fact;
       setResource(fact);
@@ -31,7 +31,7 @@ function Translator({ preference, selectedLanguage, translate }) {
 
   // Fetch a new resource when the preference (cat or dog) changes
   useEffect(() => {
-    fetchResource(preference);
+    fetchResource();
   }, [preference]);
 
   // Translate the current resource when a new resource is fetched
@@ -45,7 +45,7 @@ function Translator({ preference, selectedLanguage, translate }) {
     <div className="translator">
       <TextCard text={resource} title="English" />
       <div className="center">
-        <Button handleClick={fetchResource}>
+        <Button handleClick={fetchResource()}>
           <FontAwesomeIcon icon={icon({ name: 'rotate-right' })} color="#000017" size="2xl" />
         </Button>
       </div>
