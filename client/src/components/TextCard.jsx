@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const TextCard = ({ title, text }) => {
+function TextCard({ title, text }) {
+  return (
+    <div className="text-card">
+      {title
+        ? <p className="color-text card-title">{title}</p>
+        : null}
+      <div className="center">
+        <p className="color-text card-body">{text}</p>
+      </div>
 
-    return (
-        <div className='text-card'>
-            {title
-            ? <p className='color-text card-title'>{title}</p>
-            : null
-            }
-            <div className='center'>
-                <p className='color-text card-body'>{text}</p>
-            </div>
-            
-        </div>
-    );
+    </div>
+  );
 }
 
 export default TextCard;

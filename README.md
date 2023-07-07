@@ -1,4 +1,5 @@
 # Translation app for Aview International
+Developed by Nicholas Milligan
 
 ## Installation
 ```shell
