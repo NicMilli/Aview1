@@ -1,5 +1,5 @@
 # Translation app for Aview International
-Developed by Nicholas Milligan
+Developed by [Nicholas Milligan](https://github.com/NicMilli)
 
 ## Installation
 ```shell
@@ -9,6 +9,15 @@ npm install
 ```shell
 npm run build
 npm run start
+```
+
+Create a .env file in the root directory with the following contents:
+
+```shell
+PORT=3000
+CAT_API=https://catfact.ninja/fact
+DOG_API=https://dogapi.dog/api/v2/facts
+TRANSLATION_API=https://translate.foxhaven.cyou
 ```
 
 ## Approach
