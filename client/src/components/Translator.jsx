@@ -6,7 +6,7 @@ import TextCard from './TextCard';
 import Button from './Button';
 
 function Translator({ preference, selectedLanguage, translate }) {
-  const [resource, setResource] = useState('loading...');
+  const [resource, setResource] = useState('Loading...');
   const [translatedResource, setTranslatedResource] = useState('');
 
   // Fetch the required resource
@@ -45,7 +45,7 @@ function Translator({ preference, selectedLanguage, translate }) {
     <div className="translator">
       <TextCard text={resource} title="English" />
       <div className="center">
-        <Button handleClick={fetchResource()}>
+        <Button handleClick={fetchResource}>
           <FontAwesomeIcon icon={icon({ name: 'rotate-right' })} color="#000017" size="2xl" />
         </Button>
       </div>
