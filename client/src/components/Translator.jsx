@@ -7,7 +7,7 @@ import Button from './Button';
 
 function Translator({ preference, selectedLanguage, translate }) {
   const [resource, setResource] = useState('');
-  const [translatedResource, setTranslatedResource] = useState('');
+  const [translatedResource, setTranslatedResource] = useState('Translating...');
   const [loading, setLoading] = useState(true);
 
   // Fetch the required resource
@@ -32,7 +32,8 @@ function Translator({ preference, selectedLanguage, translate }) {
 
   // Fetch a new resource when the preference (cat or dog) changes
   useEffect(() => {
-    setLoading(() => true);
+    setLoading(true);
+    setTranslatedResource(() => 'Translating...');
     fetchResource();
   }, [preference]);
 
