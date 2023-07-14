@@ -6,21 +6,22 @@ import TextCard from './TextCard';
 import Button from './Button';
 
 function Translator({ preference, selectedLanguage, translate }) {
-  const [resource, setResource] = useState('Loading...');
+  const [resource, setResource] = useState('');
   const [translatedResource, setTranslatedResource] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Fetch the required resource
   const fetchResource = async () => {
-    setResource(() => 'Loading...');
+    let fact;
     if (preference === 'cat') {
       const res = await axios.get(process.env.CAT_API);
-      const fact = await res.data.fact;
-      setResource(fact);
+      fact = await res.data.fact;
     } else {
       const res = await axios.get(process.env.DOG_API);
-      const fact = await res.data.data[0].attributes.body;
-      setResource(fact);
+      fact = await res.data.data[0].attributes.body;
     }
+    setLoading(() => false);
+    setResource(fact);
   };
 
   // Translate the current fact
@@ -31,21 +32,28 @@ function Translator({ preference, selectedLanguage, translate }) {
 
   // Fetch a new resource when the preference (cat or dog) changes
   useEffect(() => {
+    setLoading(() => true);
     fetchResource();
   }, [preference]);
 
   // Translate the current resource when a new resource is fetched
   // or the target language is changed
   useEffect(() => {
-    setTranslatedResource(() => 'Translating...');
-    translateResource(resource);
+    if (resource.length > 0) {
+      setTranslatedResource(() => 'Translating...');
+      translateResource(resource);
+    }
   }, [resource, selectedLanguage]);
 
   return (
     <div className="translator">
-      <TextCard text={resource} title="English" />
+      <TextCard text={loading ? 'Loading...' : resource} title="English" />
       <div className="center">
-        <Button handleClick={fetchResource}>
+        <Button handleClick={() => {
+          setLoading(() => true);
+          fetchResource();
+        }}
+        >
           <FontAwesomeIcon icon={icon({ name: 'rotate-right' })} color="#000017" size="2xl" />
         </Button>
       </div>
