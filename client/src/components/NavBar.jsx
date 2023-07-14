@@ -2,9 +2,10 @@ import React from 'react';
 import Buttons from './Buttons';
 
 function NavBar({
-  languages, setSelectedLanguage, preference, setPreference,
+  languages, setSelectedLanguage, preference, setPreference, setArrayIndex, arrayIndex
 }) {
   const handleChange = (e) => {
+    setArrayIndex(e.target.value);
     setSelectedLanguage(languages[e.target.value]);
   };
 
@@ -12,9 +13,9 @@ function NavBar({
     <div className="nav-bar">
       <label className="color-text" htmlFor="language">
         Language: &nbsp;
-        <select onChange={handleChange} className="color-select" name="language">
+        <select onChange={handleChange} className="color-select" name="language" value={arrayIndex}>
           {languages.map((lang, index) => (
-            <option className="color-option" value={index} key={lang.code}>{lang.name}</option>
+            <option className="color-option" value={index} key={lang.name}>{lang.name}</option>
           ))}
         </select>
       </label>

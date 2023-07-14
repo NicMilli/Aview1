@@ -21,7 +21,7 @@ function Translator({ preference, selectedLanguage, translate }) {
       fact = await res.data.data[0].attributes.body;
     }
     setLoading(() => false);
-    setResource(fact);
+    setResource(() => fact);
   };
 
   // Translate the current fact

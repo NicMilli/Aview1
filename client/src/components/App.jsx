@@ -12,6 +12,7 @@ export default function App() {
   const [languages, setLanguages] = useState([{ code: 'en', name: 'English', targets: 'initial' }]);
   const [selectedLanguage, setSelectedLanguage] = useState({ code: 'en', name: 'English' });
   const [greeting, setGreeting] = useState(englishGreeting);
+  const [arrayIndex, setArrayIndex] = useState(0);
 
   // helper function to fetch available languages asynchronously in useeffect
   const getLanguages = async () => {
@@ -36,7 +37,7 @@ export default function App() {
       const newResource = await res.data.translatedText;
       return newResource;
     } catch (err) {
-      return 'Error fetching your fact';
+      return 'Error Translating your fact';
     }
   };
 
@@ -77,6 +78,9 @@ export default function App() {
         preference={preference}
         setSelectedLanguage={setSelectedLanguage}
         setPreference={setPreference}
+        selectedLanguage={selectedLanguage}
+        setArrayIndex={setArrayIndex}
+        arrayIndex={arrayIndex}
       />
       <div className="center">
         {preference.length > 0
@@ -91,7 +95,14 @@ export default function App() {
             <div>
               <TextCard text={greeting.text} title={greeting.title} />
               <div className="center">
-                <Buttons iconSize="8x" setPreference={setPreference} />
+                <Buttons
+                  iconSize="8x"
+                  setPreference={(choice) => {
+                    setSelectedLanguage({ code: 'ar', name: 'Arabic' });
+                    setArrayIndex(1);
+                    setPreference(choice);
+                  }}
+                />
               </div>
             </div>
           )}
