@@ -98,7 +98,7 @@ export default function App() {
                 <Buttons
                   iconSize="8x"
                   setPreference={(choice) => {
-                    setSelectedLanguage({ code: 'ar', name: 'Arabic' });
+                    setSelectedLanguage(() => ({ code: 'ar', name: 'Arabic' }));
                     setArrayIndex(1);
                     setPreference(choice);
                   }}
