@@ -37,7 +37,7 @@ export default function App() {
       const newResource = await res.data.translatedText;
       return newResource;
     } catch (err) {
-      return 'Error Translating your fact';
+      return 'Error with the translation API, sorry';
     }
   };
 
